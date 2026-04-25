@@ -20,6 +20,7 @@ merge {
             pull.rebase = false;
             init.defaultBranch = "main";
             push.autoSetupRemote = true;
+            signing.format = "openpgp";
             merge.conflictStyle = "zdiff3";
             rebase.autosquash = true;
             diff.colorMoved = "default";

@@ -46,7 +46,7 @@ in
 
   home.sessionVariables = {
     SPECTER_ARTIFACT_ROOT = "/Users/ludwig/mnt/specter-archive";
-    SPECTER_JJ_WS_ROOT = "/Volumes/Addenda/ws/specter-labs";
+    SPECTER_JJ_WS_ROOT = "/Users/ludwig/ws/specter-labs";
     SPECTER_LOG_ROOT = "/Users/ludwig/mnt/specter-archive";
   };
 

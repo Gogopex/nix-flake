@@ -7,6 +7,7 @@ merge {
     {
       programs.yazi = enabled {
         enableFishIntegration = true;
+        shellWrapperName = "yy";
 
         settings = {
           log = {
