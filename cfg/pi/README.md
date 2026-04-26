@@ -38,7 +38,6 @@ as `auth.json`, `sessions/`, `activity/`, usage logs, or debug logs.
 - `history-search-v2.ts`: prompt/session history search
 - `grouped-tools-v2.ts`: grouped tool display
 - `session-ux-v2.ts`: auto titles and recent sessions
-- `agent-dashboard.ts`: active/session dashboard overlay
 - `vcs-status-v2.ts`: jj/git footer and topology helpers
 - `review-v2.ts`: review findings tools and summaries
 - `inprocess-tools.ts`: Node-based grep/find replacements to avoid process-spawn pressure
@@ -59,6 +58,5 @@ as `auth.json`, `sessions/`, `activity/`, usage logs, or debug logs.
 - `/planflow <task>` → scout → expert recommendation (no automatic implementation)
 - `/scout-and-plan <task>` → same lean advisory flow
 - `/recent-v2` → recent sessions
-- `/dashboard` → agent/session dashboard
 - `/review` and `/review-summary` → collect/review findings
 - `/autoresearch <goal>` → enter the experiment-loop workflow

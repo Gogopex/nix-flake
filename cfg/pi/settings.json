@@ -83,13 +83,6 @@
     "autoTitle": true,
     "recentCount": 12
   },
-  "agentDashboard": {
-    "enabled": true,
-    "overlayMode": "full",
-    "refreshMs": 2500,
-    "staleAfterMs": 180000,
-    "recentSessionCount": 60
-  },
   "reviewV2": {
     "enabled": true
   },
