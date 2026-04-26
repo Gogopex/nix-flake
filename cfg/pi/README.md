@@ -1,36 +1,64 @@
 # Pi Configuration (dotfiles)
 
-This directory contains reusable Pi resources:
+This directory contains reusable Pi resources managed by this nix-dotfiles repo.
 
-- `extensions/`: TypeScript extensions loaded by Pi
-- `prompts/`: slash prompt templates
-- `agents/`: subagent definitions (copied to `~/.pi/agent/agents`)
-- `themes/`: custom themes (eg. gruvbox-dark)
+- `settings.json`, `presets.json`, `keybindings.json`, `models.json`: global Pi config seeds
+- `AGENTS.md`: global Pi agent defaults copied to `~/.pi/agent/AGENTS.md`
+- `extensions/`: TypeScript extensions loaded by Pi from this repo
+- `prompts/`: slash prompt templates loaded by Pi from this repo
+- `agents/`: lean subagent definitions copied to `~/.pi/agent/agents`
+  - `scout` = cheap/fast read-only recon
+  - `expert` = expensive/smart read-only advice, planning, and review
+- `memory/`: global memory copied to `~/.pi/agent/memory`
+- `skills/`: custom skills copied to `~/.pi/agent/skills`
+- `themes/`: custom themes, including `gruvbox-dark`
 
-## Notes
+## Sync
 
-- Global Pi settings point to this directory via:
-  - `extensions: ["/Users/ludwig/dev/dotfiles/cfg/pi/extensions"]`
-  - `prompts: ["/Users/ludwig/dev/dotfiles/cfg/pi/prompts"]`
-- The subagent extension reads agents from `~/.pi/agent/agents` (and optional `.pi/agents` per project).
+Run:
+
+```bash
+./cfg/pi/sync-to-home.sh
+```
+
+The script copies global config files, agents, memory, and skills into
+`~/.pi/agent` (or `$PI_CODING_AGENT_DIR`). Extensions/prompts/themes are loaded
+directly from this repo via absolute paths in `settings.json`:
+
+- `/Users/ludwig/dev/nix-dotfiles/cfg/pi/extensions`
+- `/Users/ludwig/dev/nix-dotfiles/cfg/pi/prompts`
+- `/Users/ludwig/dev/nix-dotfiles/cfg/pi/themes`
+
+The script intentionally does **not** copy transient or sensitive Pi state such
+as `auth.json`, `sessions/`, `activity/`, usage logs, or debug logs.
 
 ## Included custom pieces
 
-- `jj-guard.ts`: blocks risky mutating `git` commands and nudges to `jj`
-- `vcs-status.ts`: footer status with `jj` workspace/change id (or git branch fallback)
-- `auth-banner-footer.ts`: custom footer without cost; shows subtle subscription/API auth mode banner
-- `jj-checkpoint.ts`: optional auto checkpointing for jj (`/jj-checkpoint on`)
-- `agent-duel.ts`: `/duel` + `Ctrl+Shift+Y` to run scout/planner suggestion duel and compare outputs
-- `themes/gruvbox-dark.json`: gruvbox-style Pi theme matching dark terminal workflows
+- `status-bar-v2.ts`: compact footer/status with model/auth context
+- `history-search-v2.ts`: prompt/session history search
+- `grouped-tools-v2.ts`: grouped tool display
+- `session-ux-v2.ts`: auto titles and recent sessions
+- `agent-dashboard.ts`: active/session dashboard overlay
+- `vcs-status-v2.ts`: jj/git footer and topology helpers
+- `review-v2.ts`: review findings tools and summaries
+- `inprocess-tools.ts`: Node-based grep/find replacements to avoid process-spawn pressure
+- `context-compressor/`: recall-informed compaction trigger using `settings.compression`
+- `signal-trimmer/`: high-signal context trimming with pressure warnings
+- `structured-checkpoint/`: stricter compaction checkpoint summaries
+- `claude-work-oauth.ts`: optional Claude work OAuth provider
+- `pi-memory.ts`: project/global memory tools
+- `preset.ts`: `--preset` flag and `/preset` command backed by `presets.json`
+- `subagent/`: `subagent` tool used by scout/expert prompt flows
+- `pi-autoresearch/`: autonomous experiment-loop tools, activated by `/autoresearch`
 
 ## Quick usage
 
 - `pi --preset worker -c` → normal implementation loop
-- `pi --preset scout --no-session` → cheap recon pane
-- `/preset` or `Ctrl+Shift+U` → switch/cycle presets
-- `/planflow <task>` → scout → planner → plan-reviewer (gpt-5.3-codex) → worker
-- `/scout-and-plan <task>` → recon + plan only (no implementation)
-- `/duel <task>` or `Ctrl+Shift+Y` → scout + planner on same prompt, then compare suggestions (no implementation)
-- `/workspace-team <cwd> <task>` → full team flow in a target workspace
-- `/workspace-sweep` → quick jj workspace audit
-- `/jj-checkpoint on` → enable auto jj checkpoints after edit/write turns
+- `pi --preset safe --no-session` → read-only analysis
+- Use `subagent` with `scout` for cheap recon and `expert` for smart second opinions
+- `/planflow <task>` → scout → expert recommendation (no automatic implementation)
+- `/scout-and-plan <task>` → same lean advisory flow
+- `/recent-v2` → recent sessions
+- `/dashboard` → agent/session dashboard
+- `/review` and `/review-summary` → collect/review findings
+- `/autoresearch <goal>` → enter the experiment-loop workflow

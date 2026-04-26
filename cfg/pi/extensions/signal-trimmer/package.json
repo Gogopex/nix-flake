@@ -1,0 +1,13 @@
+{
+  "name": "pi-signal-trimmer",
+  "version": "0.1.0",
+  "description": "Continuous context trimming with pressure-aware warnings and optional auto-compaction",
+  "type": "module",
+  "main": "index.ts",
+  "omp": {
+    "extensions": ["./extension.ts"]
+  },
+  "pi": {
+    "extensions": ["./extension.ts"]
+  }
+}

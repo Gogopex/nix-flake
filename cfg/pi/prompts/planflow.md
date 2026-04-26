@@ -1,19 +1,13 @@
 ---
-description: scout -> planner -> plan-reviewer (gpt-5.3-codex) -> worker
+description: scout recon -> expert plan/review (no implementation)
 ---
-Use the `subagent` tool in chain mode with agents `scout`, `planner`, `plan-reviewer`, and `worker`.
+Use the `subagent` tool in chain mode with agents `scout` and `expert`.
 
 Task:
 $@
 
 Flow requirements:
-1. `scout` gathers code context and constraints for the task.
-2. `planner` creates an implementation plan using `{previous}`.
-3. `plan-reviewer` critiques and revises that plan using `{previous}`.
-   - This step is pinned by agent config to model `gpt-5.3-codex`.
-4. `worker` executes the revised plan from `{previous}`.
+1. `scout` cheaply gathers relevant code context and constraints.
+2. `expert` uses `{previous}` to produce a high-quality plan/review/recommendation.
 
-Execution requirements:
-- Keep changes focused and minimal.
-- Run relevant checks/tests.
-- End with summary + changed files + risks/follow-ups.
+Do not implement automatically. Return the expert recommendation and ask before making changes unless the user already explicitly requested implementation.

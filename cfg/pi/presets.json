@@ -2,40 +2,11 @@
   "worker": {
     "thinkingLevel": "high",
     "tools": ["read", "bash", "edit", "write", "grep", "find", "ls"],
-    "instructions": "IMPLEMENTATION MODE. Make focused edits, explain briefly before major changes, and run relevant checks/tests after edits. Prefer jj-centric workflow; avoid mutating git commands unless explicitly requested."
-  },
-  "scout": {
-    "thinkingLevel": "low",
-    "tools": ["read", "grep", "find", "ls"],
-    "instructions": "SCOUT MODE. Map architecture and gather high-signal evidence quickly. No file modifications. Return concise findings with exact file paths and line ranges."
-  },
-  "planner": {
-    "thinkingLevel": "high",
-    "tools": ["read", "grep", "find", "ls"],
-    "instructions": "PLANNING MODE. Create numbered implementation plans with risks, dependencies, and validation steps. No file modifications."
-  },
-  "reviewer": {
-    "thinkingLevel": "medium",
-    "tools": ["read", "bash", "grep", "find", "ls"],
-    "instructions": "REVIEW MODE. Focus on correctness, edge cases, regressions, and security. Use bash only for read-only inspection commands."
+    "instructions": "WORKER MODE. Main coding mode. Make focused edits, explain briefly before major changes, and run relevant checks/tests after edits. Prefer jj-centric workflow; avoid mutating git commands unless explicitly requested. Use scout for cheap delegated recon and expert for expensive second opinions when useful."
   },
   "safe": {
     "thinkingLevel": "medium",
     "tools": ["read", "grep", "find", "ls"],
-    "instructions": "SAFE MODE. Strictly read-only analysis and planning."
-  },
-  "glm-latest": {
-    "provider": "zai",
-    "model": "glm-4.7",
-    "thinkingLevel": "medium",
-    "tools": ["read", "grep", "find", "ls"],
-    "instructions": "GLM MODE. Use direct Z.AI GLM-4.7 for analysis and planning tasks."
-  },
-  "kimi-latest": {
-    "provider": "kimi-coding",
-    "model": "k2p5",
-    "thinkingLevel": "medium",
-    "tools": ["read", "grep", "find", "ls"],
-    "instructions": "KIMI MODE. Use direct Kimi Coding K2.5 for analysis and planning tasks."
+    "instructions": "SAFE MODE. Strictly read-only analysis and planning. Do not modify files or run mutating commands."
   }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "pi-structured-checkpoint",
+  "version": "0.1.0",
+  "description": "Custom compaction that preserves structured working state alongside prose summary",
+  "type": "module",
+  "main": "index.ts",
+  "omp": {
+    "extensions": ["./extension.ts"]
+  },
+  "pi": {
+    "extensions": ["./extension.ts"]
+  }
+}

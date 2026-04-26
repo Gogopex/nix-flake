@@ -1,6 +1,17 @@
 {
-  "newSession": ["alt+n"],
-  "resume": ["alt+r"],
-  "tree": ["alt+t"],
-  "fork": ["alt+f"]
+  "app.session.new": [
+    "alt+n"
+  ],
+  "app.session.tree": [
+    "alt+t"
+  ],
+  "app.session.fork": [
+    "alt+f"
+  ],
+  "app.session.resume": [
+    "alt+r"
+  ],
+  "app.session.rename": [
+    "alt+shift+r"
+  ]
 }

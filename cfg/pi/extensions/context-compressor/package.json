@@ -1,0 +1,10 @@
+{
+  "name": "context-compressor",
+  "version": "1.0.0",
+  "description": "Automatic recall-informed context compression",
+  "type": "module",
+  "main": "index.ts",
+  "pi": {
+    "extensions": ["./index.ts"]
+  }
+}

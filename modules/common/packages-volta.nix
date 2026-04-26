@@ -61,8 +61,8 @@ let
       spec = "@biomejs/biome@2.3.9";
     }
     {
-      expected = "package @mariozechner/pi-coding-agent@0.69.0";
-      spec = "@mariozechner/pi-coding-agent@0.69.0";
+      expected = "package @mariozechner/pi-coding-agent@0.70.2";
+      spec = "@mariozechner/pi-coding-agent@0.70.2";
     }
   ];
 

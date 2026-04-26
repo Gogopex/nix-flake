@@ -1,18 +1,29 @@
 {
-  "lastChangelogVersion": "0.52.9",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
+  "lastChangelogVersion": "0.70.2",
+  "defaultProvider": "google-gemini-cli",
+  "defaultModel": "gemini-3.1-pro-preview",
   "defaultThinkingLevel": "high",
   "theme": "gruvbox-dark",
+  "quietStartup": true,
+  "collapseChangelog": true,
+  "hideThinkingBlock": true,
+  "claudeWorkOauth": {
+    "enabled": true
+  },
   "enabledModels": [
-    "gpt-5*",
-    "claude-sonnet-*",
-    "claude-haiku-*",
-    "gemini-2.5-*",
-    "zai/glm-4.7*",
-    "kimi-coding/k2p5",
-    "openrouter/z-ai/glm-4.7*",
-    "openrouter/moonshotai/kimi-k2.5*"
+    "google-gemini-cli/gemini-3.1-pro-preview",
+    "google-gemini-cli/gemini-3.1-flash-lite-preview",
+    "google-gemini-cli/gemini-3-flash-preview",
+    "openai-codex/gpt-5.5:high",
+    "openai-codex/gpt-5.3-codex-spark",
+    "codex-work/gpt-5.4:high",
+    "anthropic/claude-opus-4-6",
+    "anthropic/claude-sonnet-4-6",
+    "deepseek/deepseek-v4-pro",
+    "kimi-coding/k2p6",
+    "kimi-coding/kimi-for-coding",
+    "zai/glm-4.7",
+    "zai/glm-4.7-flash"
   ],
   "steeringMode": "all",
   "followUpMode": "all",
@@ -20,6 +31,23 @@
     "enabled": true,
     "reserveTokens": 16384,
     "keepRecentTokens": 30000
+  },
+  "compression": {
+    "enabled": true,
+    "warnThreshold": 160000,
+    "compressThreshold": 190000,
+    "keepLastTurns": 10,
+    "searchTerms": [
+      "decision",
+      "agreed",
+      "error",
+      "bug",
+      "fix",
+      "important",
+      "conclusion",
+      "plan"
+    ],
+    "customInstructions": "Focus on decisions made, files modified, errors encountered and resolved, and the current direction of work."
   },
   "retry": {
     "enabled": true,
@@ -29,12 +57,80 @@
   },
   "enableSkillCommands": true,
   "extensions": [
-    "/Users/ludwig/dev/dotfiles/cfg/pi/extensions"
+    "/Users/ludwig/dev/nix-dotfiles/cfg/pi/extensions"
   ],
   "prompts": [
-    "/Users/ludwig/dev/dotfiles/cfg/pi/prompts"
+    "/Users/ludwig/dev/nix-dotfiles/cfg/pi/prompts"
   ],
   "themes": [
-    "/Users/ludwig/dev/dotfiles/cfg/pi/themes"
-  ]
+    "/Users/ludwig/dev/nix-dotfiles/cfg/pi/themes"
+  ],
+  "statusBarV2": {
+    "enabled": true,
+    "profile": "personal",
+    "showAuth": true,
+    "compactFooter": true
+  },
+  "historySearchV2": {
+    "enabled": true,
+    "maxItems": 200
+  },
+  "groupedToolsV2": {
+    "enabled": true
+  },
+  "sessionUxV2": {
+    "enabled": true,
+    "autoTitle": true,
+    "recentCount": 12
+  },
+  "agentDashboard": {
+    "enabled": true,
+    "overlayMode": "full",
+    "refreshMs": 2500,
+    "staleAfterMs": 180000,
+    "recentSessionCount": 60
+  },
+  "reviewV2": {
+    "enabled": true
+  },
+  "isolatedTaskV2": {
+    "enabled": true
+  },
+  "vcsStatusV2": {
+    "enabled": true,
+    "preferJj": true,
+    "pollMs": 1500,
+    "maxIsolatedSlots": 4,
+    "showAvail": true
+  },
+  "packages": [
+    "npm:pi-web-access",
+    "npm:@codexstar/pi-listen",
+    "npm:pi-rtk"
+  ],
+  "signalTrimmer": {
+    "enabled": true,
+    "keepRecentTurns": 12,
+    "summaryMaxChars": 280,
+    "bashErrorLines": 5,
+    "bashHeadLines": 3,
+    "bashTailLines": 5,
+    "deduplicateReads": true,
+    "deduplicateBashOutputs": true,
+    "stripOldThinking": false,
+    "warnPercent": 0.75,
+    "compactPercent": 0.9,
+    "minTurnsBetweenAutoCompact": 3,
+    "autoCompact": false,
+    "showStatusLine": true,
+    "showAutoCompactMessage": true,
+    "debug": false
+  },
+  "structuredCheckpoint": {
+    "enabled": false,
+    "model": "current",
+    "maxTokens": 8192,
+    "includeRecentContext": true,
+    "debug": false
+  }
 }
