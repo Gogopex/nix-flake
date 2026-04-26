@@ -72,6 +72,7 @@ in
       "orbstack"
       "sublime-text"
       "superwhisper"
+      "zed"
     ];
 
     brews = [

@@ -14,7 +14,6 @@ in
     environment.systemPackages = with pkgs; [
       maccy
       obsidian
-      zed-editor
       zotero
     ];
   };
