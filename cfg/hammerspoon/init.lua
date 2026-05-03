@@ -12,6 +12,25 @@ for _, binding in ipairs(apps) do
   end)
 end
 
+local fastWorkspaceSwitch = "/run/current-system/sw/bin/fast-workspace-switch"
+
+local function switchWorkspace(direction, count)
+  if hs.fs.attributes(fastWorkspaceSwitch) == nil then
+    hs.alert.show("fast-workspace-switch is not installed")
+    return
+  end
+
+  hs.task.new(fastWorkspaceSwitch, nil, {direction, tostring(count or 1)}):start()
+end
+
+hs.hotkey.bind({"cmd", "alt"}, "h", function()
+  switchWorkspace("left", 1)
+end)
+
+hs.hotkey.bind({"cmd", "alt"}, "l", function()
+  switchWorkspace("right", 1)
+end)
+
 local logConfig = {
   enabled = true,
   onlyWithModifiers = true,

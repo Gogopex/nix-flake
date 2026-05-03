@@ -32,6 +32,7 @@ in
 
   darwin.windowManagers.rectangle.enable = true;
   darwin.hammerspoon.enable = true;
+  darwin.hammerspoon.fastWorkspaceSwitch.enable = true;
 
   users.users.ludwig = {
     name = "ludwig";
