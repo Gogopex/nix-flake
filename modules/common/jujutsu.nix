@@ -14,7 +14,7 @@ merge {
           ui.diff-editor = ":builtin";
           ui.diff-formatter = ":git";
           ui.graph.style = if config.theme.cornerRadius > 0 then "curved" else "square";
-          ui.pager = "delta";
+          ui.pager = "hunk pager";
 
           aliases = {
             ".." = [

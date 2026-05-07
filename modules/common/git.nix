@@ -25,7 +25,7 @@ merge {
             rebase.autosquash = true;
             diff.colorMoved = "default";
 
-            core.pager = "delta";
+            core.pager = "hunk pager";
             interactive.diffFilter = "delta --color-only";
             delta = {
               navigate = true;

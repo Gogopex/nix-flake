@@ -15,6 +15,14 @@ let
       type = "standard";
     };
   };
+  hideMenuKeyEquivalents =
+    apps:
+    builtins.listToAttrs (
+      map (app: {
+        name = "Hide ${app}";
+        value = "@~^$h";
+      }) apps
+    );
 in
 {
   type = "desktop";
@@ -158,6 +166,26 @@ in
     };
 
     CustomUserPreferences = {
+      NSGlobalDomain = {
+        NSUserKeyEquivalents = hideMenuKeyEquivalents [
+          "Arc"
+          "Calendar"
+          "ChatGPT"
+          "Cursor"
+          "Finder"
+          "Ghostty"
+          "Mail"
+          "Messages"
+          "Notes"
+          "Obsidian"
+          "Orion"
+          "Preview"
+          "Safari"
+          "Sublime Text"
+          "System Settings"
+          "Visual Studio Code"
+        ];
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           "65" = disabledSymbolicHotKey 49 1572864;
