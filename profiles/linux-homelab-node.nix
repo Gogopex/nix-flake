@@ -12,6 +12,7 @@ let
       {
         type = "server";
         nixConfig.manage = false;
+        packages.profile = "thin";
         userShell = "fish";
       }
     ];

@@ -36,12 +36,12 @@
     };
 
     dispatch = {
-      url = "github:Gogopex/dispatch";
+      url = "git+ssh://git@github.com/Gogopex/dispatch.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     recall = {
-      url = "github:Gogopex/recall";
+      url = "git+ssh://git@github.com/Gogopex/recall.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

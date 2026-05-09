@@ -12,9 +12,8 @@ let
     types
     ;
 
-  corePackages = {
+  thinPackages = {
     inherit (pkgs)
-      bandwhich
       zoxide
       fzf
       ripgrep
@@ -23,24 +22,17 @@ let
       eza
       git
       curl
-      wget
       broot
 
       zellij
       delta
 
-      nixfmt-rfc-style
+      nixfmt
       nixd
       nh
 
-      tokei
-      hyperfine
       just
-      cmake
-      ninja
       tldr
-      glow
-      lazygit
       procs
       jq
       yq-go
@@ -59,8 +51,17 @@ let
     recall = inputs.recall.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 
-  fullPackages = corePackages // {
+  fullPackages = thinPackages // {
     inherit (pkgs)
+      bandwhich
+      wget
+      tokei
+      hyperfine
+      cmake
+      ninja
+      glow
+      lazygit
+
       # go
       # gopls
       # gofumpt
@@ -125,17 +126,17 @@ let
       ;
   };
 
-  profilePackages = if config.packages.profile == "full" then fullPackages else corePackages;
+  profilePackages = if config.packages.profile == "full" then fullPackages else thinPackages;
 
 in
 {
   options = {
     packages.profile = mkOption {
       type = types.enum [
-        "core"
+        "thin"
         "full"
       ];
-      default = "core";
+      default = "thin";
     };
   };
 

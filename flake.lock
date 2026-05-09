@@ -49,17 +49,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1777047909,
-        "narHash": "sha256-PqX0BCbqQEJf1hqyKxE8Fk5XNGgbBtbEC18sxuVvcMk=",
-        "owner": "Gogopex",
-        "repo": "dispatch",
-        "rev": "53408a91b891e56d5bbdefe052a87fcfe45007e6",
-        "type": "github"
+        "lastModified": 1778227204,
+        "narHash": "sha256-sqonm9aw8u4/ueapkyfY7o8xeBBuKICKMkOoBB131nc=",
+        "ref": "refs/heads/main",
+        "rev": "98d2543e8ef409d50b94dc186f42073e1fdf89ec",
+        "revCount": 33,
+        "type": "git",
+        "url": "ssh://git@github.com/Gogopex/dispatch.git"
       },
       "original": {
-        "owner": "Gogopex",
-        "repo": "dispatch",
-        "type": "github"
+        "type": "git",
+        "url": "ssh://git@github.com/Gogopex/dispatch.git"
       }
     },
     "flake-utils": {
@@ -161,17 +161,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1776952483,
-        "narHash": "sha256-N5zAIm3ScSZxqrBvr4YWOn2FBD7QW0pxrM9iPZ5vjcE=",
-        "owner": "Gogopex",
-        "repo": "recall",
-        "rev": "e66493c206cd8d28fb5c37c0eadf59480a14ceea",
-        "type": "github"
+        "lastModified": 1777223673,
+        "narHash": "sha256-LwxrbbgSMSzMQkT6cvyaLPefeO2t0Qwb2k34yDV4VFg=",
+        "ref": "refs/heads/master",
+        "rev": "6283ccfe069f7f7b841087641b1ffdf57d5ed5ad",
+        "revCount": 18,
+        "type": "git",
+        "url": "ssh://git@github.com/Gogopex/recall.git"
       },
       "original": {
-        "owner": "Gogopex",
-        "repo": "recall",
-        "type": "github"
+        "type": "git",
+        "url": "ssh://git@github.com/Gogopex/recall.git"
       }
     },
     "root": {

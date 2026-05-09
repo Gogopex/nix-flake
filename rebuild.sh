@@ -39,7 +39,7 @@ usage() {
     echo "  --ask         Preview changes before applying (requires nh)"
     echo "  --home        Rebuild only Home Manager configuration"
     echo "  --no-nh       Force use of native tools even if nh is available"
-    echo "  --profile     Set package profile (core or full)"
+    echo "  --profile     Set package profile (thin or full)"
     echo "  --            Pass remaining arguments to rebuild tool"
     echo ""
     echo "Examples:"
@@ -106,8 +106,8 @@ if [[ "$EXPECT_PROFILE" == "true" ]]; then
     exit 1
 fi
 
-if [[ -n "$PROFILE" ]] && [[ "$PROFILE" != "core" ]] && [[ "$PROFILE" != "full" ]]; then
-    print_error "Invalid profile: $PROFILE (expected core or full)"
+if [[ -n "$PROFILE" ]] && [[ "$PROFILE" != "thin" ]] && [[ "$PROFILE" != "full" ]]; then
+    print_error "Invalid profile: $PROFILE (expected thin or full)"
     usage
     exit 1
 fi
