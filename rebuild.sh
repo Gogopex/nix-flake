@@ -349,18 +349,10 @@ else
 
         if command -v darwin-rebuild &> /dev/null; then
             print_info "Using darwin-rebuild..."
-            DARWIN_CMD=(
-                sudo
-                env
-                "NIX_CONFIG=$NIX_CONFIG"
-                darwin-rebuild
-            )
+            DARWIN_CMD=(darwin-rebuild)
         else
             print_info "darwin-rebuild not found, bootstrapping via nix run..."
             DARWIN_CMD=(
-                sudo
-                env
-                "NIX_CONFIG=$NIX_CONFIG"
                 nix
                 "run"
                 "nix-darwin/master#darwin-rebuild"
