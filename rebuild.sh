@@ -352,7 +352,9 @@ else
             DARWIN_CMD=(
                 sudo
                 env
+                "HOME=/var/root"
                 "NIX_CONFIG=$NIX_CONFIG"
+                "GIT_CONFIG_GLOBAL=/var/root/.gitconfig"
                 "GIT_CONFIG_COUNT=1"
                 "GIT_CONFIG_KEY_0=safe.directory"
                 "GIT_CONFIG_VALUE_0=$SCRIPT_DIR"
@@ -363,7 +365,9 @@ else
             DARWIN_CMD=(
                 sudo
                 env
+                "HOME=/var/root"
                 "NIX_CONFIG=$NIX_CONFIG"
+                "GIT_CONFIG_GLOBAL=/var/root/.gitconfig"
                 "GIT_CONFIG_COUNT=1"
                 "GIT_CONFIG_KEY_0=safe.directory"
                 "GIT_CONFIG_VALUE_0=$SCRIPT_DIR"
