@@ -137,6 +137,9 @@ find_host_config() {
         mbp-old|macbook)
             hostname="m1p"
             ;;
+        macmini|ludwigs-mac-mini|Ludwigs-Mac-mini)
+            hostname="m4"
+            ;;
     esac
 
     if host_config_exists "$hostname"; then
