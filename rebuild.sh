@@ -280,34 +280,35 @@ if [[ -n "$PROFILE" ]]; then
 EOF
 fi
 
-COMMON_NIX_OPTS=(
-    "--extra-experimental-features" "nix-command flakes pipe-operators"
-    "--option" "accept-flake-config" "true"
-    "--option" "eval-cache" "true"
+SCRIPT_NIX_CONFIG=$(
+    cat <<'EOF'
+extra-experimental-features = nix-command flakes pipe-operators
+accept-flake-config = true
+eval-cache = true
+EOF
 )
+
+if [[ -n "${NIX_CONFIG:-}" ]]; then
+    export NIX_CONFIG="${NIX_CONFIG}"$'\n'"${SCRIPT_NIX_CONFIG}"
+else
+    export NIX_CONFIG="${SCRIPT_NIX_CONFIG}"
+fi
 
 if command -v nh &> /dev/null && [[ "$USE_NH" == "true" ]]; then
     print_info "Using nh for rebuild (better UX)..."
 
-    if [[ "$HOME_ONLY" == "true" ]]; then
-        NH_ARGS=("home" "switch" ".#homeConfigurations.$HOST.activationPackage")
+    if [[ "$HOME_ONLY" == "true" ]] || [[ "$SYSTEM_TYPE" != "darwin" ]]; then
+        NH_ARGS=("home" "switch" "." "-c" "$HOST")
     elif [[ "$SYSTEM_TYPE" == "darwin" ]]; then
         NH_ARGS=("darwin" "switch" ".#darwinConfigurations.$HOST")
-    else
-        NH_ARGS=("home" "switch" ".#homeConfigurations.$HOST.activationPackage")
     fi
 
     if [[ "$ASK_FLAG" == "true" ]]; then
         NH_ARGS+=("--ask")
     fi
 
-    NIX_ARGS=("${COMMON_NIX_OPTS[@]}")
-    if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
-        NIX_ARGS+=("${EXTRA_ARGS[@]}")
-    fi
-
     export NH_FLAKE="$SCRIPT_DIR"
-    if nh "${NH_ARGS[@]}" -- "${NIX_ARGS[@]}"; then
+    if nh "${NH_ARGS[@]}" -- "${EXTRA_ARGS[@]}"; then
         print_success "Configuration rebuilt successfully with nh!"
     else
         print_error "Rebuild with nh failed!"
@@ -329,8 +330,6 @@ else
         if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
             HM_ARGS+=("${EXTRA_ARGS[@]}")
         fi
-        HM_ARGS+=("${COMMON_NIX_OPTS[@]}")
-
         if home-manager "${HM_ARGS[@]}"; then
             print_success "Home Manager configuration rebuilt successfully!"
 
@@ -348,18 +347,20 @@ else
             "--flake" ".#$HOST"
         )
 
-        NIX_ARGS=("${COMMON_NIX_OPTS[@]}")
-        if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
-            NIX_ARGS+=("${EXTRA_ARGS[@]}")
-        fi
-
         if command -v darwin-rebuild &> /dev/null; then
             print_info "Using darwin-rebuild..."
-            DARWIN_CMD=(sudo darwin-rebuild)
+            DARWIN_CMD=(
+                sudo
+                env
+                "NIX_CONFIG=$NIX_CONFIG"
+                darwin-rebuild
+            )
         else
             print_info "darwin-rebuild not found, bootstrapping via nix run..."
             DARWIN_CMD=(
                 sudo
+                env
+                "NIX_CONFIG=$NIX_CONFIG"
                 nix
                 "run"
                 "nix-darwin/master#darwin-rebuild"
@@ -367,7 +368,7 @@ else
             )
         fi
 
-        if "${DARWIN_CMD[@]}" "${DARWIN_ARGS[@]}" "${NIX_ARGS[@]}"; then
+        if "${DARWIN_CMD[@]}" "${DARWIN_ARGS[@]}" "${EXTRA_ARGS[@]}"; then
             print_success "Darwin configuration rebuilt successfully!"
 
             if ! command -v nh &> /dev/null; then
@@ -390,8 +391,6 @@ else
         if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
             HM_ARGS+=("${EXTRA_ARGS[@]}")
         fi
-        HM_ARGS+=("${COMMON_NIX_OPTS[@]}")
-
         if home-manager "${HM_ARGS[@]}"; then
             print_success "Home Manager configuration rebuilt successfully!"
 
