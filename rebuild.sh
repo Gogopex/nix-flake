@@ -349,10 +349,24 @@ else
 
         if command -v darwin-rebuild &> /dev/null; then
             print_info "Using darwin-rebuild..."
-            DARWIN_CMD=(darwin-rebuild)
+            DARWIN_CMD=(
+                sudo
+                env
+                "NIX_CONFIG=$NIX_CONFIG"
+                "GIT_CONFIG_COUNT=1"
+                "GIT_CONFIG_KEY_0=safe.directory"
+                "GIT_CONFIG_VALUE_0=$SCRIPT_DIR"
+                darwin-rebuild
+            )
         else
             print_info "darwin-rebuild not found, bootstrapping via nix run..."
             DARWIN_CMD=(
+                sudo
+                env
+                "NIX_CONFIG=$NIX_CONFIG"
+                "GIT_CONFIG_COUNT=1"
+                "GIT_CONFIG_KEY_0=safe.directory"
+                "GIT_CONFIG_VALUE_0=$SCRIPT_DIR"
                 nix
                 "run"
                 "nix-darwin/master#darwin-rebuild"
