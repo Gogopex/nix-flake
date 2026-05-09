@@ -137,8 +137,8 @@ find_host_config() {
         mbp-old|macbook)
             hostname="m1p"
             ;;
-        macmini|ludwigs-mac-mini|Ludwigs-Mac-mini)
-            hostname="m4"
+        ludwigs-mac-mini|Ludwigs-Mac-mini)
+            hostname="macmini"
             ;;
     esac
 
