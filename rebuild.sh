@@ -308,7 +308,10 @@ if command -v nh &> /dev/null && [[ "$USE_NH" == "true" ]]; then
     fi
 
     export NH_FLAKE="$SCRIPT_DIR"
-    if nh "${NH_ARGS[@]}" -- "${EXTRA_ARGS[@]}"; then
+    if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
+        NH_ARGS+=("--" "${EXTRA_ARGS[@]}")
+    fi
+    if nh "${NH_ARGS[@]}"; then
         print_success "Configuration rebuilt successfully with nh!"
     else
         print_error "Rebuild with nh failed!"
@@ -378,7 +381,10 @@ else
             )
         fi
 
-        if "${DARWIN_CMD[@]}" "${DARWIN_ARGS[@]}" "${EXTRA_ARGS[@]}"; then
+        if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
+            DARWIN_ARGS+=("${EXTRA_ARGS[@]}")
+        fi
+        if "${DARWIN_CMD[@]}" "${DARWIN_ARGS[@]}"; then
             print_success "Darwin configuration rebuilt successfully!"
 
             if ! command -v nh &> /dev/null; then
