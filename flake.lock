@@ -44,20 +44,19 @@
     },
     "dispatch": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1778227204,
-        "narHash": "sha256-sqonm9aw8u4/ueapkyfY7o8xeBBuKICKMkOoBB131nc=",
+        "lastModified": 1793205442,
+        "narHash": "sha256-wOZRkQE1SlUnHAFZK6vkyJKjaBHtYntMRfP5tx+PN0o=",
         "ref": "refs/heads/main",
-        "rev": "98d2543e8ef409d50b94dc186f42073e1fdf89ec",
-        "revCount": 33,
+        "rev": "c59eceb781989441f693e5329247ba07c91190f4",
+        "revCount": 37,
         "type": "git",
         "url": "ssh://git@github.com/Gogopex/dispatch.git"
       },
       "original": {
+        "rev": "c59eceb781989441f693e5329247ba07c91190f4",
         "type": "git",
         "url": "ssh://git@github.com/Gogopex/dispatch.git"
       }
@@ -124,6 +123,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1776329215,
+        "narHash": "sha256-a8BYi3mzoJ/AcJP8UldOx8emoPRLeWqALZWu4ZvjPXw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b86751bc4085f48661017fa226dee99fab6c651b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1776949667,
         "narHash": "sha256-GMSVw35Q+294GlrTUKlx087E31z7KurReQ1YHSKp5iw=",
         "owner": "NixOS",
@@ -138,7 +153,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1776255774,
         "narHash": "sha256-psVTpH6PK3q1htMJpmdz1hLF5pQgEshu7gQWgKO6t6Y=",
@@ -180,7 +195,7 @@
         "dispatch": "dispatch",
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "recall": "recall",
         "zjstatus": "zjstatus"
       }
@@ -240,7 +255,7 @@
       "inputs": {
         "crane": "crane",
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "rust-overlay": "rust-overlay"
       },
       "locked": {

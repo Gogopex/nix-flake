@@ -1,0 +1,260 @@
+# Authoritative homelab configuration. Read at runtime; never compiled into dispatch.
+[machines.m5m]
+local = true
+availability = "hot"
+local_hostnames = ["m5m"]
+ssh = "m5m"
+roles = ["control", "interactive", "agent-capable"]
+capabilities = ["cpu", "apple-silicon", "apple-gpu", "mlx", "large-memory"]
+tool_root = "/Users/ludwig/.local/state/dispatch"
+workspace_root = "/Users/ludwig/.local/state/dispatch/workspaces"
+bootstrap = ["/Users/ludwig/dev/nix-dotfiles/rebuild.sh", "m5m"]
+description = "M5 Max MacBook Pro. Prefer for portable local-first editing, agents, MLX, and high-memory Apple Silicon workloads."
+
+[machines.m1p]
+local_hostnames = ["m1p"]
+availability = "cold"
+ssh = "m1p"
+roles = ["interactive", "agent-capable"]
+capabilities = ["cpu", "apple-silicon"]
+tool_root = "/Volumes/Addenda/.dispatch/state"
+workspace_root = "/Volumes/Addenda/.dispatch/state/workspaces"
+bootstrap = ["/Users/ludwig/dev/nix-dotfiles/rebuild.sh", "m1p"]
+description = "M1 Pro MacBook Pro. Keep as useful Apple Silicon compute; always-on vs portable role is intentionally undecided."
+
+[machines.macmini]
+local_hostnames = ["macmini"]
+availability = "hot"
+ssh = "macmini"
+roles = ["always-on", "remote-runner", "agent-capable"]
+capabilities = ["cpu", "apple-silicon", "apple-gpu", "mlx"]
+tool_root = "/Users/ludwig/.local/state/dispatch"
+workspace_root = "/Users/ludwig/.local/state/dispatch/workspaces"
+description = "M4 Mac mini with 16GB memory and 256GB storage. Always-on Tailscale Apple Silicon host for lightweight remote jobs, agents, and MLX/Apple GPU probes."
+
+[machines.quietbox]
+ssh = "quietbox"
+availability = "hot"
+login_shell = "/bin/bash"
+roles = ["always-on", "remote-runner", "agent-capable"]
+capabilities = ["cpu", "wormhole"]
+tool_root = "/home/ludwig/.local/state/dispatch"
+workspace_root = "/home/ludwig/.local/state/dispatch/workspaces"
+
+[machines.quietbox.health]
+temperature_warn_c = 75
+temperature_crit_c = 85
+memory_warn_percent = 10
+disk_warn_percent = 90
+
+[machines.quietbox.bmc]
+command = '''
+if [ -n "${IPMI_PASSWORD:-${IPMITOOL_PASSWORD:-}}" ]; then
+  exec ipmitool -I lanplus -H 192.168.1.12 -U ADMIN -E sensor
+else
+  exec ssh quietbox 'sudo -n env PATH=/nix/var/nix/profiles/default/bin:$PATH nix shell nixpkgs#ipmitool -c ipmitool sensor'
+fi
+'''
+
+[machines.pi]
+# Retained for historical jobs; no current SSH alias or Tailscale node.
+ssh = "pi"
+availability = "cold"
+login_shell = "/bin/bash"
+roles = ["always-on", "remote-runner", "agent-capable"]
+capabilities = ["cpu", "arm64"]
+tool_root = "/home/ludwig/.local/state/dispatch"
+workspace_root = "/home/ludwig/.local/state/dispatch/workspaces"
+description = "Raspberry Pi always-on ARM host for lightweight remote jobs and agent checks."
+
+[machines.mica]
+# Linux SSH through the Windows host into the existing CUDA/Ubuntu 22.04 runtime.
+ssh = "mica-wsl"
+local_hostnames = ["mica"]
+availability = "warm"
+login_shell = "/bin/bash"
+roles = ["gpu", "remote-runner"]
+capabilities = ["cpu", "nvidia-gpu"]
+tool_root = "/home/ludwig/.local/state/dispatch"
+workspace_root = "/home/ludwig/.local/state/dispatch/workspaces"
+
+[machines.mica.health]
+required_mounts = ["/shared"]
+
+[agents.claude]
+command = "claude"
+args = ["--print"]
+description = "Claude CLI in print mode for one-shot analysis and review tasks."
+
+[agents.codex]
+command = "codex"
+args = ["exec"]
+description = "Codex CLI one-shot agent runs."
+
+[agents.hermes]
+command = "hermes"
+description = "Hermes CLI for alternate model opinions and exploratory runs."
+
+[storage]
+shared = "/shared"
+local_mount = "/Volumes/shared"
+local_mount_target = "100.102.156.101:/shared"
+local_mount_required = false
+artifact_root = "/shared/specter-artifacts"
+runtime_root = "/shared/specter-runtime"
+stage_cache_root = "/shared/specter-runtime/.dispatch-stage-cache"
+
+[storage.tiers.mac-root]
+kind = "workstation-local"
+owner = "m5m"
+purpose = "offline-first code, tools, and daily interactive work"
+local_path = "/Users/ludwig"
+description = "Primary MBP-local tier. Keep source repos and normal editing workflows local-first."
+
+[storage.tiers.portable-bulk]
+kind = "local-bulk"
+owner = "external"
+purpose = "optional external/local bulk state when mounted on the current Mac"
+local_path = "/Volumes/Addenda"
+description = "Optional Addenda volume. The M5 Max MBP has enough root SSD space that this is no longer assumed to be the primary bulk tier."
+
+[storage.tiers.macmini-root]
+kind = "workstation-local"
+owner = "macmini"
+purpose = "always-on Apple Silicon runtime, agents, and lightweight local state"
+local_path = "/Users/ludwig"
+description = "Mac mini local tier. Keep it useful for always-on Apple Silicon work, but do not treat the 256GB internal SSD as a bulk artifact store."
+
+[storage.tiers.shared-fast]
+kind = "network-shared"
+owner = "quietbox"
+purpose = "shared durable data plane for active homelab work"
+local_path = "/Volumes/shared"
+remote_path = "/shared"
+description = "Current shared plane. This is the transition path toward the future ZFS-backed data pool."
+
+[storage.tiers.artifacts]
+kind = "durable-artifacts"
+owner = "quietbox"
+purpose = "durable run outputs and model artifacts"
+local_path = "/Volumes/shared/specter-artifacts"
+remote_path = "/shared/specter-artifacts"
+
+[storage.tiers.logs]
+kind = "durable-logs"
+owner = "quietbox"
+purpose = "durable logs and operator-facing run history"
+local_path = "/Volumes/shared/specter-logs"
+remote_path = "/shared/specter-logs"
+
+[storage.tiers.runtime]
+kind = "runtime"
+owner = "quietbox"
+purpose = "remote run roots, caches, and staged execution inputs"
+local_path = "/Volumes/shared/specter-runtime"
+remote_path = "/shared/specter-runtime"
+
+[storage.tiers.archive-cold]
+kind = "archive"
+owner = "external"
+purpose = "cold archive and backup destination"
+local_path = "/Users/ludwig/mnt/specter-archive"
+description = "Cold archive tier mounted on demand from external storage."
+
+[projects.specter-labs]
+repo_remotes = ["git@github.com:Specter-Research-Labs/research-registry.git"]
+repo_subdir = "research-registry"
+adapter = "specter-labs"
+snapshot_excludes = [
+  "tmp/",
+  "generated/",
+  ".venv/",
+  "node_modules/",
+  "target/",
+  "dossiers/lenia-playground/runs/",
+  "dossiers/lenia-playground/search/",
+  "dossiers/lenia-swarm/artifacts/",
+  "dossiers/lenia-swarm/generated/",
+  "dossiers/lenia-swarm/outputs/",
+  "dossiers/lenia-swarm/tmp/",
+  "dossiers/wonton-soup/logs/",
+  "dossiers/wonton-soup/logs-remote",
+  "dossiers/wonton-soup/outputs/",
+  "dossiers/wonton-soup/artifacts/",
+  "dossiers/zang-levin-playground/data",
+  "dossiers/zang-levin-playground/generated/",
+  "dossiers/zang-levin-playground/tmp/",
+  "site/atlas/public/published/",
+  "site/dashboards/wonton-soup/dist/",
+  "site/dossiers/lenia-swarm/compendium/data",
+]
+sync_ignores = [
+  ".git",
+  ".jj",
+  "build",
+  "tmp",
+  "generated",
+  ".venv",
+  "node_modules",
+  "target",
+  "dossiers/lenia-playground/runs",
+  "dossiers/lenia-playground/search",
+  "dossiers/lenia-swarm/artifacts",
+  "dossiers/lenia-swarm/generated",
+  "dossiers/lenia-swarm/outputs",
+  "dossiers/lenia-swarm/tmp",
+  "dossiers/wonton-soup/logs",
+  "dossiers/wonton-soup/logs-remote",
+  "dossiers/wonton-soup/outputs",
+  "dossiers/wonton-soup/artifacts",
+  "dossiers/zang-levin-playground/data",
+  "dossiers/zang-levin-playground/generated",
+  "dossiers/zang-levin-playground/tmp",
+  "site/atlas/public/published",
+  "site/dashboards/wonton-soup/dist",
+  "site/dossiers/lenia-swarm/compendium/data",
+]
+
+[projects.specter-labs.job_probe]
+builtin = "specter-labs/wonton"
+stale_after_secs = 1800
+
+[projects.specter-labs.machine_env.quietbox]
+DEEPSEEK_ARTIFACT_ROOT = "/shared/specter-artifacts"
+HF_HOME = "/shared/specter-runtime/common/huggingface"
+HF_HUB_CACHE = "/shared/specter-runtime/common/huggingface/hub"
+HF_ASSETS_CACHE = "/shared/specter-runtime/common/huggingface/assets"
+HF_DATASETS_CACHE = "/shared/specter-runtime/common/huggingface/datasets"
+TRANSFORMERS_CACHE = "/shared/specter-runtime/common/huggingface/hub"
+LEAN_PROJECT_PATH = "/shared/specter-runtime/common/wonton-soup/lean_project"
+
+[projects.specter-labs.machine_env.mica]
+SPECTER_ARTIFACT_ROOT = "/shared/specter-artifacts"
+SPECTER_LOG_ROOT = "/shared/specter-logs"
+SPECTER_RUNTIME_ROOT = "/shared/specter-runtime"
+DEEPSEEK_ARTIFACT_ROOT = "/shared/specter-artifacts"
+HF_HOME = "/shared/specter-runtime/common/huggingface"
+HF_HUB_CACHE = "/shared/specter-runtime/common/huggingface/hub"
+HF_ASSETS_CACHE = "/shared/specter-runtime/common/huggingface/assets"
+HF_DATASETS_CACHE = "/shared/specter-runtime/common/huggingface/datasets"
+TRANSFORMERS_CACHE = "/shared/specter-runtime/common/huggingface/hub"
+LEAN_PROJECT_PATH = "/shared/specter-runtime/common/wonton-soup/lean_project"
+LEAN_REPL_EXE = "/shared/specter-runtime/machines/mica/wonton-soup/bin/repl"
+
+[projects.gwern-abap]
+repo_remotes = ["git@github.com:Gogopex/gwern-abap.git"]
+sync_ignores = [
+  "_site",
+  "_cache",
+  "_docs",
+  "dist-newstyle",
+  "site/_site",
+  "site/_cache",
+  "site/_docs",
+  "site/dist-newstyle",
+  "site/bookmarks.db",
+  "site/ops/zotero_env",
+  "lib/logs",
+  "lib/onto-core/data/backups",
+  "data/backups",
+]
